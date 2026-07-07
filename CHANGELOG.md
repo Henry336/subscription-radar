@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 - 2026-07-08
+
+### Added
+
+- Import review panel showing recognized CSV columns, normalized preview rows, and rejected-row reasons.
+- Parser diagnostics for unreadable dates, missing merchants, and unreadable amounts.
+
 ## 0.1.1 - 2026-07-08
 
 ### Added

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { analyzeSubscriptions, normalizeMerchant, parseTransactions, sampleCsv } from "../src/detector.js";
+import { analyzeSubscriptions, normalizeMerchant, parseTransactionInput, parseTransactions, sampleCsv } from "../src/detector.js";
 
 test("parses CSV with quoted merchants and parenthesized charges", () => {
   const rows = parseTransactions(`Date,Description,Amount
@@ -10,6 +10,40 @@ test("parses CSV with quoted merchants and parenthesized charges", () => {
   assert.equal(rows.length, 2);
   assert.equal(rows[0].merchant, "ACME, Streaming");
   assert.equal(rows[0].amount, -12.99);
+});
+
+test("reports import diagnostics with recognized headers and preview rows", () => {
+  const result = parseTransactionInput(`Posted Date,Payee,Debit,Credit
+2026-01-01,Acme Streaming,(12.99),
+2026-01-02,Acme Refund,,12.99`);
+
+  assert.equal(result.transactions.length, 2);
+  assert.equal(result.diagnostics.hasHeader, true);
+  assert.equal(result.diagnostics.columns.date, "Posted Date (column 1)");
+  assert.equal(result.diagnostics.columns.merchant, "Payee (column 2)");
+  assert.equal(result.diagnostics.columns.amount, "Debit (column 3)");
+  assert.equal(result.diagnostics.columns.credit, "Credit (column 4)");
+  assert.deepEqual(result.diagnostics.previewRows[0], {
+    date: "2026-01-01",
+    merchant: "Acme Streaming",
+    amount: -12.99,
+    sourceRow: 2
+  });
+});
+
+test("reports rejected rows instead of silently dropping unreadable imports", () => {
+  const result = parseTransactionInput(`Date,Description,Amount
+not-a-date,Acme Streaming,-12.99
+2026-01-02,,-12.99
+2026-01-03,Acme Streaming,not-money
+2026-01-04,Acme Streaming,-12.99`);
+
+  assert.equal(result.transactions.length, 1);
+  assert.equal(result.diagnostics.rejectedRows.length, 3);
+  assert.deepEqual(
+    result.diagnostics.rejectedRows.map((row) => row.reason),
+    ["missing or unreadable date", "missing merchant", "missing or unreadable amount"]
+  );
 });
 
 test("normalizes noisy merchant descriptors", () => {

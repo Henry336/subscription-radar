@@ -52,8 +52,17 @@ export const sampleCsv = `Date,Description,Amount
 2026-03-20,Coffee Shop,-5.80`;
 
 export function parseTransactions(input) {
+  return parseTransactionInput(input).transactions;
+}
+
+export function parseTransactionInput(input) {
   const rows = parseCsv(input.trim());
-  if (rows.length === 0) return [];
+  if (rows.length === 0) {
+    return {
+      transactions: [],
+      diagnostics: createDiagnostics([], false, { date: 0, merchant: 1, amount: 2, credit: -1 }, [], [], true)
+    };
+  }
 
   const header = rows[0].map((cell) => normalizeHeader(cell));
   const hasHeader = header.some((cell) => DATE_HEADERS.includes(cell)) &&
@@ -65,10 +74,16 @@ export function parseTransactions(input) {
     ? inferIndexes(header)
     : { date: 0, merchant: 1, amount: 2, credit: -1 };
 
-  return rows.slice(start)
-    .map((row, index) => normalizeRow(row, indexes, index + start + 1))
+  const rejectedRows = [];
+  const transactions = rows.slice(start)
+    .map((row, index) => normalizeRow(row, indexes, index + start + 1, rejectedRows))
     .filter(Boolean)
     .sort((a, b) => a.date.localeCompare(b.date));
+
+  return {
+    transactions,
+    diagnostics: createDiagnostics(rows[0], hasHeader, indexes, rejectedRows, transactions)
+  };
 }
 
 export function analyzeSubscriptions(transactions) {
@@ -184,14 +199,21 @@ function inferIndexes(header) {
   };
 }
 
-function normalizeRow(row, indexes, sourceRow) {
+function normalizeRow(row, indexes, sourceRow, rejectedRows = []) {
   const date = parseDate(row[indexes.date]);
   const merchant = row[indexes.merchant]?.trim();
   const debit = parseAmount(row[indexes.amount]);
   const credit = indexes.credit >= 0 ? parseAmount(row[indexes.credit]) : 0;
   const amount = credit > 0 && debit === 0 ? credit : debit;
 
-  if (!date || !merchant || Number.isNaN(amount)) return null;
+  if (!date || !merchant || Number.isNaN(amount)) {
+    rejectedRows.push({
+      sourceRow,
+      reason: getRejectionReason(date, merchant, amount),
+      raw: row
+    });
+    return null;
+  }
   return {
     id: `${date}-${sourceRow}-${merchant}`,
     date,
@@ -199,6 +221,39 @@ function normalizeRow(row, indexes, sourceRow) {
     amount: roundMoney(amount),
     sourceRow
   };
+}
+
+function createDiagnostics(firstRow, hasHeader, indexes, rejectedRows, transactions, isEmpty = false) {
+  return {
+    isEmpty,
+    hasHeader,
+    columns: {
+      date: describeColumn(firstRow, indexes.date),
+      merchant: describeColumn(firstRow, indexes.merchant),
+      amount: describeColumn(firstRow, indexes.amount),
+      credit: describeColumn(firstRow, indexes.credit)
+    },
+    rejectedRows,
+    previewRows: transactions.slice(0, 5).map((transaction) => ({
+      date: transaction.date,
+      merchant: transaction.merchant,
+      amount: transaction.amount,
+      sourceRow: transaction.sourceRow
+    }))
+  };
+}
+
+function describeColumn(firstRow, index) {
+  if (index < 0) return "not found";
+  const label = firstRow[index] || `column ${index + 1}`;
+  return `${label} (column ${index + 1})`;
+}
+
+function getRejectionReason(date, merchant, amount) {
+  if (!date) return "missing or unreadable date";
+  if (!merchant) return "missing merchant";
+  if (Number.isNaN(amount)) return "missing or unreadable amount";
+  return "unreadable row";
 }
 
 function normalizeHeader(value) {

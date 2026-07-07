@@ -1,4 +1,4 @@
-import { analyzeSubscriptions, parseTransactions, sampleCsv } from "./detector.js";
+import { analyzeSubscriptions, parseTransactionInput, sampleCsv } from "./detector.js";
 import { createCleanupPlan } from "./planning.js";
 
 const input = document.querySelector("#transaction-input");
@@ -11,10 +11,12 @@ const findings = document.querySelector("#findings");
 const suppressed = document.querySelector("#suppressed");
 const duplicates = document.querySelector("#duplicates");
 const parseStatus = document.querySelector("#parse-status");
+const importReview = document.querySelector("#import-review");
 
 let currentPlan = null;
 let currentTransactions = [];
 let currentAnalysis = null;
+let currentDiagnostics = null;
 let suppressedCandidateIds = new Set();
 
 loadSample.addEventListener("click", () => {
@@ -59,7 +61,9 @@ suppressed.addEventListener("click", (event) => {
 });
 
 function analyze() {
-  currentTransactions = parseTransactions(input.value);
+  const parsed = parseTransactionInput(input.value);
+  currentTransactions = parsed.transactions;
+  currentDiagnostics = parsed.diagnostics;
   currentAnalysis = analyzeSubscriptions(currentTransactions);
   suppressedCandidateIds = new Set();
   refreshAnalysisView();
@@ -71,10 +75,71 @@ function refreshAnalysisView() {
   const dismissed = getSuppressedSubscriptions(currentAnalysis);
   currentPlan = createCleanupPlan(visible, dismissed);
   renderSummary(currentTransactions, visible, dismissed.length);
+  renderImportReview(currentDiagnostics);
   renderFindings(visible.subscriptions, dismissed.length);
   renderSuppressed(dismissed);
   renderDuplicates(visible.duplicateRisks);
   exportButton.disabled = currentAnalysis.subscriptions.length === 0;
+}
+
+function renderImportReview(diagnostics) {
+  importReview.innerHTML = "";
+  if (!diagnostics || diagnostics.isEmpty) return;
+
+  const rejectedCount = diagnostics.rejectedRows.length;
+  const previewRows = diagnostics.previewRows;
+  const status = rejectedCount > 0 ? "needs-review" : "ok";
+  const headerMode = diagnostics.hasHeader ? "Header row recognized" : "No full header match; using first three columns";
+
+  importReview.innerHTML = `
+    <div class="review-head">
+      <div>
+        <h3>Import review</h3>
+        <p>${headerMode}. ${rejectedCount} rejected row${rejectedCount === 1 ? "" : "s"}.</p>
+      </div>
+      <span class="review-badge ${status}">${rejectedCount > 0 ? "Check rows" : "Ready"}</span>
+    </div>
+    <dl class="column-map">
+      <div><dt>Date</dt><dd>${escapeHtml(diagnostics.columns.date)}</dd></div>
+      <div><dt>Merchant</dt><dd>${escapeHtml(diagnostics.columns.merchant)}</dd></div>
+      <div><dt>Amount/debit</dt><dd>${escapeHtml(diagnostics.columns.amount)}</dd></div>
+      <div><dt>Credit</dt><dd>${escapeHtml(diagnostics.columns.credit)}</dd></div>
+    </dl>
+    ${previewRows.length > 0 ? renderPreviewRows(previewRows) : `<p class="empty">No readable transaction rows yet.</p>`}
+    ${rejectedCount > 0 ? renderRejectedRows(diagnostics.rejectedRows) : ""}
+  `;
+}
+
+function renderPreviewRows(rows) {
+  return `
+    <div class="review-table" role="table" aria-label="Normalized transaction preview">
+      <div class="review-row review-header" role="row">
+        <span role="columnheader">Date</span>
+        <span role="columnheader">Merchant</span>
+        <span role="columnheader">Amount</span>
+      </div>
+      ${rows.map((row) => `
+        <div class="review-row" role="row">
+          <span role="cell">${escapeHtml(row.date)}</span>
+          <span role="cell">${escapeHtml(row.merchant)}</span>
+          <span role="cell">${formatMoney(row.amount)}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderRejectedRows(rows) {
+  const visibleRows = rows.slice(0, 4);
+  return `
+    <details class="rejected-rows" open>
+      <summary>Rejected rows</summary>
+      <ul>
+        ${visibleRows.map((row) => `<li>Row ${row.sourceRow}: ${escapeHtml(row.reason)}</li>`).join("")}
+        ${rows.length > visibleRows.length ? `<li>${rows.length - visibleRows.length} more rejected row${rows.length - visibleRows.length === 1 ? "" : "s"}</li>` : ""}
+      </ul>
+    </details>
+  `;
 }
 
 function getVisibleAnalysis(analysis) {

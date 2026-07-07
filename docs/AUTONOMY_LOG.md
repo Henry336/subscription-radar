@@ -1,5 +1,40 @@
 # Autonomy Log
 
+## 2026-07-08 import review run
+
+### Repo state
+
+- Started from a clean working tree at `35b98db Add false-positive dismissal workflow`.
+- Read automation memory, README, roadmap, changelog, prior autonomy log, source, tests, and recent commits.
+- Read overnight scout files from `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\subscription_leak_opportunities.md` and `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\top_implementation_tasks.md`.
+- `gh` is still not installed in this workspace, so local GitHub issue inspection was not available.
+
+### Recommendation decision
+
+- Used the scout recommendation to improve import review because messy CSV trust is upstream of every detection result.
+- Scoped down the full manual column-mapping rescue for this run because the current parser needed stable diagnostics and UI preview first.
+- Rejected renewal timeline for this run, even though it remains valuable, because import transparency is the bigger first-time-user risk.
+
+### Shipped
+
+- Added parser diagnostics for recognized columns, normalized preview rows, and rejected rows.
+- Added an import review panel below the CSV input so users can see what the local parser understood before trusting findings.
+- Added tests for debit/credit header diagnostics and explicit rejected-row reasons.
+
+### Verification
+
+- `npm test`
+- `npm run build`
+
+### Product notes
+
+- The app no longer silently drops unreadable import rows from the user experience.
+- The next import step should add manual column selectors for files whose headers or column order cannot be inferred.
+
+### Next run
+
+- Add manual column mapping for difficult CSVs, or add the renewal calendar if import diagnostics look good enough after manual testing.
+
 ## 2026-07-08
 
 ### Repo state

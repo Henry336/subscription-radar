@@ -6,6 +6,7 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 ## Near-term priorities
 
+- Add manual column mapping for messy CSVs whose headers or column order cannot be inferred safely.
 - Improve merchant normalization with user-approved aliases.
 - Add a renewal calendar view sorted by estimated next charge date.
 - Detect trial-to-paid transitions more explicitly.
@@ -28,4 +29,5 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 ## Completed
 
+- Import review with recognized columns, normalized preview rows, and rejected-row reasons.
 - Inline false-positive controls that remove a candidate from active totals while keeping an export audit trail.
