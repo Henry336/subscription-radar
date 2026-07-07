@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscription Leak Radar</title>
+    <link rel="stylesheet" href="./src/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Subscription Leak Radar</h1>
+        <p>Local-first recurring charge review from pasted transactions or CSV files.</p>
+      </div>
+      <div class="privacy">No bank login · no upload · browser only</div>
+    </header>
+
+    <main>
+      <section class="panel input-panel" aria-labelledby="input-title">
+        <div class="section-title">
+          <h2 id="input-title">Transactions</h2>
+          <div class="actions">
+            <label class="file-button">
+              Import CSV
+              <input id="csv-file" type="file" accept=".csv,text/csv">
+            </label>
+            <button id="load-sample" type="button">Load sample</button>
+            <button id="analyze" type="button">Analyze</button>
+          </div>
+        </div>
+        <textarea id="transaction-input" spellcheck="false" placeholder="Paste CSV rows with Date, Description, Amount columns. Negative amounts are treated as spending; refunds and credits are ignored."></textarea>
+        <p id="parse-status" class="status">0 transactions parsed.</p>
+      </section>
+
+      <section id="summary" class="summary" aria-label="Analysis summary"></section>
+
+      <section class="grid">
+        <div class="panel">
+          <div class="section-title">
+            <h2>Recurring candidates</h2>
+            <button id="export-plan" type="button" disabled>Export plan</button>
+          </div>
+          <div id="findings" class="stack"></div>
+        </div>
+        <aside class="panel">
+          <h2>Duplicate risks</h2>
+          <div id="duplicates" class="stack compact"></div>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
