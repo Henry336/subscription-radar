@@ -6,12 +6,12 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 ## Near-term priorities
 
-- Add inline false-positive controls that remove or merge a candidate and rerun totals.
 - Improve merchant normalization with user-approved aliases.
 - Add a renewal calendar view sorted by estimated next charge date.
 - Detect trial-to-paid transitions more explicitly.
 - Add messy CSV examples for banks that split debit and credit columns.
 - Persist cleanup decisions locally with clear browser-storage privacy copy.
+- Add merge controls for duplicate or alias-related candidates.
 
 ## Deferred ideas
 
@@ -25,3 +25,7 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 - Plaid-style account linking: not needed for a safe first demo and conflicts with the local-first privacy promise.
 - Investment or debt advice: the product is for spending awareness and cleanup planning only.
+
+## Completed
+
+- Inline false-positive controls that remove a candidate from active totals while keeping an export audit trail.

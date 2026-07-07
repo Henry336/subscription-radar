@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 - 2026-07-08
+
+### Added
+
+- Reversible false-positive controls for recurring candidates.
+- Active subscription totals now recalculate after a candidate is dismissed.
+- Exported cleanup plans now separate active subscriptions from dismissed false positives.
+
 ## 0.1.0 - 2026-07-07
 
 ### Added

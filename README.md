@@ -10,7 +10,8 @@ The MVP does not use bank login, Plaid, paid APIs, or remote storage. Data stays
 2. Click **Load sample** to see the expected transaction format and first results.
 3. Paste your own CSV rows with `Date`, `Description`, and `Amount` columns, or use **Import CSV**.
 4. Review **Recurring candidates** and expand **Why flagged?** for the exact signals behind each match.
-5. Adjust the action selector for each merchant, then export a JSON cleanup plan.
+5. Adjust the action selector, rename merchants, or mark obvious false positives.
+6. Export a JSON cleanup plan with active candidates and dismissed false positives separated.
 
 Negative amounts are treated as spending. Positive amounts are treated as refunds, deposits, or credits and are ignored by the recurring-charge detector.
 
@@ -22,6 +23,7 @@ Negative amounts are treated as spending. Positive amounts are treated as refund
 - Observed gaps between charges.
 - Amount spread across the cluster.
 - Confidence score and suggested next action.
+- Dismissed false positives are removed from active totals but kept in the exported plan for auditability.
 
 ## CSV expectations
 
