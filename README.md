@@ -12,8 +12,9 @@ The MVP does not use bank login, Plaid, paid APIs, or remote storage. Data stays
 4. Check **Import review** to confirm which columns were recognized, preview normalized rows, and spot rejected rows.
 5. If the bank CSV uses odd headers or swapped columns, open **Fix column mapping** and choose the date, merchant, amount/debit, and optional credit columns.
 6. Review **Recurring candidates** and expand **Why flagged?** for the exact signals behind each match.
-7. Adjust the action selector, rename merchants, or mark obvious false positives.
-8. Export a JSON cleanup plan with active candidates and dismissed false positives separated.
+7. Check **Renewal timeline** to see dated renewal risks sorted by urgency and annualized cost.
+8. Adjust the action selector, rename merchants, or mark obvious false positives.
+9. Export a JSON cleanup plan with active candidates, renewal timeline, and dismissed false positives separated.
 
 Negative amounts are treated as spending. Positive amounts are treated as refunds, deposits, or credits and are ignored by the recurring-charge detector.
 
@@ -27,6 +28,7 @@ Negative amounts are treated as spending. Positive amounts are treated as refund
 - Observed gaps between charges.
 - Amount spread across the cluster.
 - Confidence score and suggested next action.
+- Renewal timeline urgency, including overdue and next 7/30/90 day candidates.
 - Dismissed false positives are removed from active totals but kept in the exported plan for auditability.
 
 ## CSV expectations

@@ -283,6 +283,11 @@ textarea {
   align-items: start;
 }
 
+.side-rail {
+  display: grid;
+  gap: 1rem;
+}
+
 .stack {
   display: grid;
   gap: 0.75rem;
@@ -291,6 +296,7 @@ textarea {
 
 .finding,
 .risk,
+.renewal,
 .suppressed-list {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -355,9 +361,27 @@ ul {
   color: var(--muted);
 }
 
-.risk {
+.risk,
+.renewal {
   display: grid;
   gap: 0.2rem;
+}
+
+.renewal {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.renewal span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.renewal.overdue {
+  border-color: #efc6b4;
+  background: #fff8f4;
 }
 
 .suppressed-list {

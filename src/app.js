@@ -1,5 +1,6 @@
 import { analyzeSubscriptions, parseTransactionInput, sampleCsv } from "./detector.js";
 import { createCleanupPlan } from "./planning.js";
+import { buildRenewalTimeline } from "./timeline.js";
 
 const input = document.querySelector("#transaction-input");
 const fileInput = document.querySelector("#csv-file");
@@ -10,6 +11,7 @@ const summary = document.querySelector("#summary");
 const findings = document.querySelector("#findings");
 const suppressed = document.querySelector("#suppressed");
 const duplicates = document.querySelector("#duplicates");
+const renewals = document.querySelector("#renewals");
 const parseStatus = document.querySelector("#parse-status");
 const importReview = document.querySelector("#import-review");
 
@@ -88,6 +90,7 @@ function refreshAnalysisView() {
   renderImportReview(currentDiagnostics);
   renderFindings(visible.subscriptions, dismissed.length);
   renderSuppressed(dismissed);
+  renderRenewals(buildRenewalTimeline(visible.subscriptions));
   renderDuplicates(visible.duplicateRisks);
   exportButton.disabled = currentAnalysis.subscriptions.length === 0;
 }
@@ -316,6 +319,33 @@ function renderDuplicates(risks) {
     item.innerHTML = `<strong>${escapeHtml(risk.merchant)}</strong><span>${escapeHtml(risk.reason)} &middot; risk ${risk.riskScore}/99</span>`;
     duplicates.append(item);
   }
+}
+
+function renderRenewals(timeline) {
+  renewals.innerHTML = "";
+  if (timeline.length === 0) {
+    renewals.innerHTML = `<p class="empty">No dated renewals found yet.</p>`;
+    return;
+  }
+
+  for (const item of timeline.slice(0, 6)) {
+    const row = document.createElement("article");
+    row.className = `renewal ${item.urgency.replaceAll(" ", "-")}`;
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHtml(item.merchant)}</strong>
+        <span>${escapeHtml(formatRenewalTiming(item))} &middot; ${escapeHtml(item.suggestedAction)}</span>
+      </div>
+      <div class="amount">${formatMoney(item.averageAmount)}<span>${formatMoney(item.annualCost)}/yr</span></div>
+    `;
+    renewals.append(row);
+  }
+}
+
+function formatRenewalTiming(item) {
+  if (item.daysUntil < 0) return `${item.nextRenewal} overdue by ${Math.abs(item.daysUntil)} day${Math.abs(item.daysUntil) === 1 ? "" : "s"}`;
+  if (item.daysUntil === 0) return `${item.nextRenewal} today`;
+  return `${item.nextRenewal} in ${item.daysUntil} day${item.daysUntil === 1 ? "" : "s"}`;
 }
 
 function updatePlanFromControls() {

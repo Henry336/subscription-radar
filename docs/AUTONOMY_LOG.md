@@ -1,5 +1,41 @@
 # Autonomy Log
 
+## 2026-07-08 renewal timeline run
+
+### Repo state
+
+- Started from a clean worktree at `5e9632f Add manual CSV column mapping`.
+- Read automation memory, README, roadmap, changelog, prior autonomy log, source, tests, recent commits, and package scripts before choosing work.
+- Read overnight scout files from `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\subscription_leak_opportunities.md` and `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\top_implementation_tasks.md`.
+- `gh issue list --limit 10` required approval because sandboxed GitHub CLI config access was denied; after approval it returned no open issues.
+
+### Recommendation decision
+
+- Used the scout recommendation to add a renewal risk timeline because manual CSV mapping is now shipped and the detector already estimates `nextRenewal`.
+- Rejected local persistence for this run because it is higher risk and should follow a cleaner separation between detector suggestions and user-selected cleanup status.
+- Rejected more import diagnostics because the current 5-minute demo needed action timing more than another parser surface.
+
+### Shipped
+
+- Added a renewal timeline panel sorted by estimated next charge date, then annualized cost for same-day renewals.
+- Labeled renewal urgency as overdue, next 7 days, next 30 days, next 90 days, or later.
+- Kept dismissed false positives out of the active timeline and added the same timeline to exported cleanup plans.
+- Added timeline fixture tests and export-plan coverage.
+
+### Verification
+
+- `npm test`
+- `npm run build`
+
+### Product notes
+
+- The sample data now turns detection into a practical cancellation calendar, though some sample renewals are intentionally overdue relative to the current date.
+- User-selected actions still mutate `suggestedAction`, which should be separated before local persistence is added.
+
+### Next run
+
+- Separate detector suggestions from user-selected cleanup status, then add browser-only persistence for decisions and column mappings.
+
 ## 2026-07-08 manual column mapping run
 
 ### Repo state

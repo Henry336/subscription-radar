@@ -7,7 +7,6 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 ## Near-term priorities
 
 - Improve merchant normalization with user-approved aliases.
-- Add a renewal calendar view sorted by estimated next charge date.
 - Detect trial-to-paid transitions more explicitly.
 - Add messy CSV examples for banks that split debit and credit columns.
 - Persist cleanup decisions locally with clear browser-storage privacy copy.
@@ -28,6 +27,7 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 ## Completed
 
+- Renewal timeline sorted by estimated next charge date and annualized cost, with overdue and next 7/30/90 day urgency labels.
 - Manual column mapping rescue for messy CSVs with nonstandard headers, swapped columns, or split debit/credit columns.
 - Import review with recognized columns, normalized preview rows, and rejected-row reasons.
 - Inline false-positive controls that remove a candidate from active totals while keeping an export audit trail.

@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { analyzeSubscriptions, parseTransactions, sampleCsv } from "../src/detector.js";
 
-const requiredFiles = ["index.html", "src/app.js", "src/detector.js", "src/planning.js", "src/styles.css"];
+const requiredFiles = ["index.html", "src/app.js", "src/detector.js", "src/planning.js", "src/timeline.js", "src/styles.css"];
 
 await Promise.all(requiredFiles.map((file) => readFile(file, "utf8")));
 

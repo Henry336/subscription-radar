@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4 - 2026-07-08
+
+### Added
+
+- Renewal timeline panel sorted by estimated next charge date and annualized cost.
+- Exported cleanup plans now include the active renewal timeline.
+- Timeline tests cover urgency buckets, sorting, and dismissed-candidate exclusion from exports.
+
 ## 0.1.3 - 2026-07-08
 
 ### Added

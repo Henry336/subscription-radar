@@ -20,4 +20,6 @@ test("cleanup plan excludes dismissed false positives from active totals", () =>
     plan.totalAnnualEstimate,
     Number((analysis.totalAnnualEstimate - dismissed.annualCost).toFixed(2))
   );
+  assert.equal(plan.renewalTimeline.some((item) => item.id === dismissed.id), false);
+  assert.ok(plan.renewalTimeline.length > 0);
 });
