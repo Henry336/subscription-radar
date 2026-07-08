@@ -55,24 +55,28 @@ export function parseTransactions(input) {
   return parseTransactionInput(input).transactions;
 }
 
-export function parseTransactionInput(input) {
+export function parseTransactionInput(input, options = {}) {
   const rows = parseCsv(input.trim());
   if (rows.length === 0) {
     return {
       transactions: [],
-      diagnostics: createDiagnostics([], false, { date: 0, merchant: 1, amount: 2, credit: -1 }, [], [], true)
+      diagnostics: createDiagnostics([], false, { date: 0, merchant: 1, amount: 2, credit: -1 }, [], [], true, false)
     };
   }
 
   const header = rows[0].map((cell) => normalizeHeader(cell));
-  const hasHeader = header.some((cell) => DATE_HEADERS.includes(cell)) &&
+  const hasRecognizedHeader = header.some((cell) => DATE_HEADERS.includes(cell)) &&
     header.some((cell) => MERCHANT_HEADERS.includes(cell)) &&
     header.some((cell) => AMOUNT_HEADERS.includes(cell) || CREDIT_HEADERS.includes(cell));
+  const hasManualMapping = Boolean(options.indexes);
 
+  const indexes = hasManualMapping
+    ? sanitizeIndexes(options.indexes)
+    : hasRecognizedHeader
+      ? inferIndexes(header)
+      : { date: 0, merchant: 1, amount: 2, credit: -1 };
+  const hasHeader = hasRecognizedHeader || rowLooksLikeManualHeader(rows, indexes, hasManualMapping);
   const start = hasHeader ? 1 : 0;
-  const indexes = hasHeader
-    ? inferIndexes(header)
-    : { date: 0, merchant: 1, amount: 2, credit: -1 };
 
   const rejectedRows = [];
   const transactions = rows.slice(start)
@@ -82,7 +86,7 @@ export function parseTransactionInput(input) {
 
   return {
     transactions,
-    diagnostics: createDiagnostics(rows[0], hasHeader, indexes, rejectedRows, transactions)
+    diagnostics: createDiagnostics(rows[0], hasHeader, indexes, rejectedRows, transactions, false, hasManualMapping)
   };
 }
 
@@ -199,12 +203,31 @@ function inferIndexes(header) {
   };
 }
 
+function sanitizeIndexes(indexes) {
+  return {
+    date: toIndex(indexes.date),
+    merchant: toIndex(indexes.merchant),
+    amount: toIndex(indexes.amount),
+    credit: toIndex(indexes.credit)
+  };
+}
+
+function toIndex(value) {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed >= 0 ? parsed : -1;
+}
+
+function rowLooksLikeManualHeader(rows, indexes, hasManualMapping) {
+  if (!hasManualMapping || rows.length < 2 || indexes.date < 0) return false;
+  return !parseDate(rows[0]?.[indexes.date]) && Boolean(parseDate(rows[1]?.[indexes.date]));
+}
+
 function normalizeRow(row, indexes, sourceRow, rejectedRows = []) {
   const date = parseDate(row[indexes.date]);
   const merchant = row[indexes.merchant]?.trim();
   const debit = parseAmount(row[indexes.amount]);
   const credit = indexes.credit >= 0 ? parseAmount(row[indexes.credit]) : 0;
-  const amount = credit > 0 && debit === 0 ? credit : debit;
+  const amount = normalizeSignedAmount(debit, credit, indexes.credit >= 0);
 
   if (!date || !merchant || Number.isNaN(amount)) {
     rejectedRows.push({
@@ -223,10 +246,22 @@ function normalizeRow(row, indexes, sourceRow, rejectedRows = []) {
   };
 }
 
-function createDiagnostics(firstRow, hasHeader, indexes, rejectedRows, transactions, isEmpty = false) {
+function normalizeSignedAmount(debit, credit, hasCreditColumn) {
+  if (Number.isNaN(debit) || Number.isNaN(credit)) return Number.NaN;
+  if (hasCreditColumn && credit > 0 && debit === 0) return credit;
+  if (hasCreditColumn && debit > 0 && credit === 0) return -debit;
+  return debit;
+}
+
+function createDiagnostics(firstRow, hasHeader, indexes, rejectedRows, transactions, isEmpty = false, hasManualMapping = false) {
   return {
     isEmpty,
     hasHeader,
+    hasManualMapping,
+    availableColumns: firstRow.map((cell, index) => ({
+      index,
+      label: cell || `column ${index + 1}`
+    })),
     columns: {
       date: describeColumn(firstRow, indexes.date),
       merchant: describeColumn(firstRow, indexes.merchant),

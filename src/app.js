@@ -18,9 +18,11 @@ let currentTransactions = [];
 let currentAnalysis = null;
 let currentDiagnostics = null;
 let suppressedCandidateIds = new Set();
+let currentColumnMapping = null;
 
 loadSample.addEventListener("click", () => {
   input.value = sampleCsv;
+  currentColumnMapping = null;
   analyze();
 });
 
@@ -30,6 +32,7 @@ fileInput.addEventListener("change", async (event) => {
   const file = event.target.files?.[0];
   if (!file) return;
   input.value = await file.text();
+  currentColumnMapping = null;
   analyze();
 });
 
@@ -60,8 +63,15 @@ suppressed.addEventListener("click", (event) => {
   refreshAnalysisView();
 });
 
+importReview.addEventListener("change", (event) => {
+  const field = event.target.closest("[data-map-field]");
+  if (!field) return;
+  currentColumnMapping = readMappingControls();
+  analyze();
+});
+
 function analyze() {
-  const parsed = parseTransactionInput(input.value);
+  const parsed = parseTransactionInput(input.value, currentColumnMapping ? { indexes: currentColumnMapping } : {});
   currentTransactions = parsed.transactions;
   currentDiagnostics = parsed.diagnostics;
   currentAnalysis = analyzeSubscriptions(currentTransactions);
@@ -89,7 +99,9 @@ function renderImportReview(diagnostics) {
   const rejectedCount = diagnostics.rejectedRows.length;
   const previewRows = diagnostics.previewRows;
   const status = rejectedCount > 0 ? "needs-review" : "ok";
-  const headerMode = diagnostics.hasHeader ? "Header row recognized" : "No full header match; using first three columns";
+  const headerMode = diagnostics.hasManualMapping
+    ? "Manual column mapping applied"
+    : diagnostics.hasHeader ? "Header row recognized" : "No full header match; using first three columns";
 
   importReview.innerHTML = `
     <div class="review-head">
@@ -105,9 +117,67 @@ function renderImportReview(diagnostics) {
       <div><dt>Amount/debit</dt><dd>${escapeHtml(diagnostics.columns.amount)}</dd></div>
       <div><dt>Credit</dt><dd>${escapeHtml(diagnostics.columns.credit)}</dd></div>
     </dl>
+    ${renderColumnMappingControls(diagnostics)}
     ${previewRows.length > 0 ? renderPreviewRows(previewRows) : `<p class="empty">No readable transaction rows yet.</p>`}
     ${rejectedCount > 0 ? renderRejectedRows(diagnostics.rejectedRows) : ""}
   `;
+}
+
+function renderColumnMappingControls(diagnostics) {
+  if (diagnostics.availableColumns.length === 0) return "";
+  const selected = currentColumnMapping || getMappingFromDiagnostics(diagnostics);
+  return `
+    <details class="mapping-rescue" ${diagnostics.hasManualMapping || diagnostics.rejectedRows.length > 0 ? "open" : ""}>
+      <summary>Fix column mapping</summary>
+      <div class="mapping-grid">
+        ${renderColumnSelect("date", "Date", diagnostics.availableColumns, selected.date, true)}
+        ${renderColumnSelect("merchant", "Merchant", diagnostics.availableColumns, selected.merchant, true)}
+        ${renderColumnSelect("amount", "Amount/debit", diagnostics.availableColumns, selected.amount, true)}
+        ${renderColumnSelect("credit", "Credit/refund", diagnostics.availableColumns, selected.credit, false)}
+      </div>
+    </details>
+  `;
+}
+
+function renderColumnSelect(field, label, columns, selectedIndex, required) {
+  const options = [
+    required
+      ? `<option value="-1" ${selectedIndex < 0 ? "selected" : ""}>Choose column</option>`
+      : `<option value="-1" ${selectedIndex < 0 ? "selected" : ""}>No credit column</option>`,
+    ...columns.map((column) => {
+      const selected = column.index === selectedIndex ? "selected" : "";
+      return `<option value="${column.index}" ${selected}>${escapeHtml(column.label)} (column ${column.index + 1})</option>`;
+    })
+  ].join("");
+
+  return `
+    <label>${label}
+      <select data-map-field="${field}">
+        ${options}
+      </select>
+    </label>
+  `;
+}
+
+function getMappingFromDiagnostics(diagnostics) {
+  const getIndex = (description) => {
+    const match = String(description).match(/\(column (\d+)\)$/);
+    return match ? Number(match[1]) - 1 : -1;
+  };
+  return {
+    date: getIndex(diagnostics.columns.date),
+    merchant: getIndex(diagnostics.columns.merchant),
+    amount: getIndex(diagnostics.columns.amount),
+    credit: getIndex(diagnostics.columns.credit)
+  };
+}
+
+function readMappingControls() {
+  const mapping = {};
+  for (const control of importReview.querySelectorAll("[data-map-field]")) {
+    mapping[control.dataset.mapField] = Number(control.value);
+  }
+  return mapping;
 }
 
 function renderPreviewRows(rows) {

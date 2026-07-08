@@ -46,6 +46,38 @@ not-a-date,Acme Streaming,-12.99
   );
 });
 
+test("allows manual column mapping when a CSV has nonstandard headers", () => {
+  const result = parseTransactionInput(`Store,Outflow,When
+Acme Streaming,-12.99,2026-01-01
+Acme Streaming,-12.99,2026-02-01`, {
+    indexes: { merchant: 0, amount: 1, date: 2, credit: -1 }
+  });
+
+  assert.equal(result.transactions.length, 2);
+  assert.equal(result.diagnostics.hasHeader, true);
+  assert.equal(result.diagnostics.hasManualMapping, true);
+  assert.equal(result.diagnostics.columns.date, "When (column 3)");
+  assert.deepEqual(result.diagnostics.previewRows[0], {
+    date: "2026-01-01",
+    merchant: "Acme Streaming",
+    amount: -12.99,
+    sourceRow: 2
+  });
+});
+
+test("manual mapping handles split debit and credit columns", () => {
+  const result = parseTransactionInput(`Memo,Deposit,Withdrawal,Posted
+Acme Streaming,,12.99,2026-01-01
+Acme Refund,12.99,,2026-01-02`, {
+    indexes: { merchant: 0, credit: 1, amount: 2, date: 3 }
+  });
+
+  assert.equal(result.transactions.length, 2);
+  assert.equal(result.transactions[0].amount, -12.99);
+  assert.equal(result.transactions[1].amount, 12.99);
+  assert.equal(result.diagnostics.columns.credit, "Deposit (column 2)");
+});
+
 test("normalizes noisy merchant descriptors", () => {
   assert.equal(normalizeMerchant("NETFLIX.COM 866-579-7172"), "netflix");
   assert.equal(normalizeMerchant("SPOTIFY *PREMIUM"), "spotify");

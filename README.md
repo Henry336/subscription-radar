@@ -10,15 +10,17 @@ The MVP does not use bank login, Plaid, paid APIs, or remote storage. Data stays
 2. Click **Load sample** to see the expected transaction format and first results.
 3. Paste your own CSV rows with `Date`, `Description`, and `Amount` columns, or use **Import CSV**.
 4. Check **Import review** to confirm which columns were recognized, preview normalized rows, and spot rejected rows.
-5. Review **Recurring candidates** and expand **Why flagged?** for the exact signals behind each match.
-6. Adjust the action selector, rename merchants, or mark obvious false positives.
-7. Export a JSON cleanup plan with active candidates and dismissed false positives separated.
+5. If the bank CSV uses odd headers or swapped columns, open **Fix column mapping** and choose the date, merchant, amount/debit, and optional credit columns.
+6. Review **Recurring candidates** and expand **Why flagged?** for the exact signals behind each match.
+7. Adjust the action selector, rename merchants, or mark obvious false positives.
+8. Export a JSON cleanup plan with active candidates and dismissed false positives separated.
 
 Negative amounts are treated as spending. Positive amounts are treated as refunds, deposits, or credits and are ignored by the recurring-charge detector.
 
 ## What the detector explains
 
 - Recognized import columns, rejected rows, and the first normalized transactions before detection.
+- Manual column mapping for CSVs whose headers or column order are not recognized safely.
 - Cleaned merchant name used for clustering.
 - Number of matching charges.
 - Estimated cadence, such as monthly or annual.

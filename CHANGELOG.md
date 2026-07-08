@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 - 2026-07-08
+
+### Added
+
+- Manual column mapping controls in import review for CSVs with nonstandard headers or swapped columns.
+- Split debit/credit column handling now treats positive debit values as spending and positive credit values as refunds or deposits.
+
 ## 0.1.2 - 2026-07-08
 
 ### Added

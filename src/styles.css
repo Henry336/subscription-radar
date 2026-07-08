@@ -236,6 +236,20 @@ textarea {
   padding-top: 0;
 }
 
+.mapping-rescue {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.65rem;
+  background: #fbfcfa;
+}
+
+.mapping-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+
 .summary {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -371,6 +385,7 @@ ul {
   .grid,
   .summary,
   .column-map,
+  .mapping-grid,
   .review-row {
     grid-template-columns: 1fr;
   }
