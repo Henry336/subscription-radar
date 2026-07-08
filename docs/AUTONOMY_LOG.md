@@ -1,5 +1,42 @@
 # Autonomy Log
 
+## 2026-07-08 action semantics run
+
+### Repo state
+
+- Started from a clean worktree at `cff20d7 Add renewal timeline`.
+- Read automation memory, README, roadmap, changelog, prior autonomy log, source, tests, recent commits, package scripts, and open issues before choosing work.
+- Read overnight scout files from `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\subscription_leak_opportunities.md` and `C:\Users\Henry\OneDrive\Desktop\overnight-agents\projects\top_implementation_tasks.md`.
+- `gh issue list --limit 10` required approval because sandboxed GitHub CLI config access was denied; after approval it returned no open issues.
+
+### Recommendation decision
+
+- Rejected the scout's top renewal timeline recommendation because the current repo already shipped it in `0.1.4`.
+- Used the scout's fix/remove recommendation to separate detector recommendations from user-selected cleanup status.
+- Chose this before local persistence because persisting actions would deepen ambiguity if user choices still overwrote detector suggestions.
+
+### Shipped
+
+- Added a `selectedAction` overlay for user edits while preserving each candidate's detector `suggestedAction`.
+- Exported cleanup plans and renewal timeline rows now include both `suggestedAction` and `selectedAction`.
+- Recurring candidate explanations now show the detector recommendation explicitly before scoring details.
+- Updated README, roadmap, changelog, and package version to `0.1.5`.
+
+### Verification
+
+- `npm test`
+- `npm run build`
+- `git diff --check`
+
+### Product notes
+
+- The cleanup plan is now clearer and safer to persist because detector output and user intent are separate.
+- User edits still last only for the current browser session.
+
+### Next run
+
+- Add browser-only local persistence for selected actions, false positives, merchant edits, and column mappings with clear reset controls and privacy copy.
+
 ## 2026-07-08 renewal timeline run
 
 ### Repo state

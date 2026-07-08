@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.5 - 2026-07-08
+
+### Added
+
+- Exported cleanup plans now keep the detector's suggested action separate from the user's selected action.
+- Recurring candidate explanations now show the detector recommendation explicitly before the scoring details.
+
+### Changed
+
+- Action edits no longer overwrite detector recommendations, which keeps future local persistence cleaner.
+
 ## 0.1.4 - 2026-07-08
 
 ### Added

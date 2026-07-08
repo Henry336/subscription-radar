@@ -17,6 +17,7 @@ test("builds renewal timeline sorted by urgency then annual cost", () => {
   assert.equal(timeline[0].urgency, "overdue");
   assert.equal(timeline[1].urgency, "next 7 days");
   assert.equal(timeline[3].urgency, "next 30 days");
+  assert.equal(timeline[1].selectedAction, "Cancel");
 });
 
 test("skips subscriptions without a next renewal date", () => {
@@ -37,6 +38,7 @@ function candidate(id, merchant, nextRenewal, annualCost) {
     cadence: "monthly",
     averageAmount: 10,
     suggestedAction: "Investigate",
+    selectedAction: "Cancel",
     confidence: 80
   };
 }

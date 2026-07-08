@@ -15,6 +15,7 @@ export function createCleanupPlan(analysis, suppressedSubscriptions = []) {
       nextRenewal: item.nextRenewal,
       confidence: item.confidence,
       suggestedAction: item.suggestedAction,
+      selectedAction: item.selectedAction || item.suggestedAction,
       whyFlagged: item.explanations
     })),
     dismissedFalsePositives: suppressedSubscriptions.map((item) => ({

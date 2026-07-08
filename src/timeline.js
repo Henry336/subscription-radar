@@ -17,6 +17,7 @@ export function buildRenewalTimeline(subscriptions, today = new Date()) {
         averageAmount: item.averageAmount,
         annualCost: item.annualCost,
         suggestedAction: item.suggestedAction,
+        selectedAction: item.selectedAction || item.suggestedAction,
         confidence: item.confidence
       };
     })

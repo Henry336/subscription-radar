@@ -23,3 +23,23 @@ test("cleanup plan excludes dismissed false positives from active totals", () =>
   assert.equal(plan.renewalTimeline.some((item) => item.id === dismissed.id), false);
   assert.ok(plan.renewalTimeline.length > 0);
 });
+
+test("cleanup plan keeps detector recommendation separate from selected action", () => {
+  const analysis = analyzeSubscriptions(parseTransactions(sampleCsv));
+  const target = analysis.subscriptions.find((item) => item.merchant === "Adobe");
+  const editedAnalysis = {
+    ...analysis,
+    subscriptions: analysis.subscriptions.map((item) => item.id === target.id
+      ? { ...item, selectedAction: "Cancel" }
+      : item)
+  };
+
+  const plan = createCleanupPlan(editedAnalysis);
+  const edited = plan.subscriptions.find((item) => item.id === target.id);
+  const renewal = plan.renewalTimeline.find((item) => item.id === target.id);
+
+  assert.equal(edited.suggestedAction, target.suggestedAction);
+  assert.equal(edited.selectedAction, "Cancel");
+  assert.equal(renewal.suggestedAction, target.suggestedAction);
+  assert.equal(renewal.selectedAction, "Cancel");
+});

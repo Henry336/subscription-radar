@@ -21,6 +21,7 @@ let currentAnalysis = null;
 let currentDiagnostics = null;
 let suppressedCandidateIds = new Set();
 let currentColumnMapping = null;
+let userEdits = new Map();
 
 loadSample.addEventListener("click", () => {
   input.value = sampleCsv;
@@ -78,6 +79,7 @@ function analyze() {
   currentDiagnostics = parsed.diagnostics;
   currentAnalysis = analyzeSubscriptions(currentTransactions);
   suppressedCandidateIds = new Set();
+  userEdits = new Map();
   refreshAnalysisView();
 }
 
@@ -216,7 +218,9 @@ function renderRejectedRows(rows) {
 }
 
 function getVisibleAnalysis(analysis) {
-  const subscriptions = analysis.subscriptions.filter((item) => !suppressedCandidateIds.has(item.id));
+  const subscriptions = analysis.subscriptions
+    .filter((item) => !suppressedCandidateIds.has(item.id))
+    .map(applyUserEdits);
   const activeMerchantNames = new Set(subscriptions.map((item) => item.merchant.toLowerCase()));
   return {
     ...analysis,
@@ -227,7 +231,18 @@ function getVisibleAnalysis(analysis) {
 }
 
 function getSuppressedSubscriptions(analysis) {
-  return analysis.subscriptions.filter((item) => suppressedCandidateIds.has(item.id));
+  return analysis.subscriptions
+    .filter((item) => suppressedCandidateIds.has(item.id))
+    .map(applyUserEdits);
+}
+
+function applyUserEdits(item) {
+  const edits = userEdits.get(item.id) || {};
+  return {
+    ...item,
+    merchant: edits.merchant || item.merchant,
+    selectedAction: edits.selectedAction || item.suggestedAction
+  };
 }
 
 function renderSummary(transactions, analysis, dismissedCount) {
@@ -271,7 +286,7 @@ function renderFindings(subscriptions, dismissedCount) {
       <div class="controls">
         <label>Action
           <select data-plan-id="${item.id}">
-            ${["Investigate", "Keep", "Cancel", "Downgrade", "Check trial"].map((option) => `<option ${option === item.suggestedAction ? "selected" : ""}>${option}</option>`).join("")}
+            ${["Investigate", "Keep", "Cancel", "Downgrade", "Check trial"].map((option) => `<option ${option === item.selectedAction ? "selected" : ""}>${option}</option>`).join("")}
           </select>
         </label>
         <label>Clean merchant
@@ -281,7 +296,10 @@ function renderFindings(subscriptions, dismissedCount) {
       </div>
       <details>
         <summary>Why flagged? Confidence ${item.confidence}/99</summary>
-        <ul>${item.explanations.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>
+        <ul>
+          <li>Detector recommendation: ${escapeHtml(item.suggestedAction)}</li>
+          ${item.explanations.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
+        </ul>
       </details>
     `;
     findings.append(article);
@@ -334,7 +352,7 @@ function renderRenewals(timeline) {
     row.innerHTML = `
       <div>
         <strong>${escapeHtml(item.merchant)}</strong>
-        <span>${escapeHtml(formatRenewalTiming(item))} &middot; ${escapeHtml(item.suggestedAction)}</span>
+        <span>${escapeHtml(formatRenewalTiming(item))} &middot; ${escapeHtml(item.selectedAction || item.suggestedAction)}</span>
       </div>
       <div class="amount">${formatMoney(item.averageAmount)}<span>${formatMoney(item.annualCost)}/yr</span></div>
     `;
@@ -349,21 +367,21 @@ function formatRenewalTiming(item) {
 }
 
 function updatePlanFromControls() {
-  if (!currentPlan) return;
-  for (const subscription of currentPlan.subscriptions) {
-    const action = document.querySelector(`[data-plan-id="${subscription.id}"]`);
-    const merchant = document.querySelector(`[data-merchant-id="${subscription.id}"]`);
-    const source = currentAnalysis?.subscriptions.find((item) => item.id === subscription.id);
-    if (action) {
-      subscription.suggestedAction = action.value;
-      if (source) source.suggestedAction = action.value;
-    }
-    if (merchant) {
-      const cleanMerchant = merchant.value.trim() || subscription.merchant;
-      subscription.merchant = cleanMerchant;
-      if (source) source.merchant = cleanMerchant;
-    }
+  if (!currentAnalysis) return;
+  for (const source of currentAnalysis.subscriptions) {
+    const action = document.querySelector(`[data-plan-id="${source.id}"]`);
+    const merchant = document.querySelector(`[data-merchant-id="${source.id}"]`);
+    if (!action && !merchant) continue;
+    const cleanMerchant = merchant?.value.trim();
+    userEdits.set(source.id, {
+      selectedAction: action?.value || userEdits.get(source.id)?.selectedAction || source.suggestedAction,
+      merchant: cleanMerchant || source.merchant
+    });
   }
+  const visible = getVisibleAnalysis(currentAnalysis);
+  const dismissed = getSuppressedSubscriptions(currentAnalysis);
+  currentPlan = createCleanupPlan(visible, dismissed);
+  renderRenewals(buildRenewalTimeline(visible.subscriptions));
 }
 
 function formatMoney(value) {
