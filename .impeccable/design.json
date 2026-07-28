@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-29T03:34:18.2112769+08:00",
+  "title": "Design System: Subscription Radar",
+  "extensions": {
+    "colorMeta": {
+      "void": {
+        "role": "neutral",
+        "displayName": "Detector Void",
+        "tonalRamp": ["oklch(0.15 0.017 244.8)", "oklch(0.27 0.017 244.8)", "oklch(0.39 0.017 244.8)", "oklch(0.51 0.017 244.8)", "oklch(0.63 0.017 244.8)", "oklch(0.75 0.017 244.8)", "oklch(0.87 0.017 244.8)", "oklch(0.95 0.017 244.8)"]
+      },
+      "void-raised": {
+        "role": "neutral",
+        "displayName": "Raised Detector Void",
+        "tonalRamp": ["oklch(0.15 0.023 246.3)", "oklch(0.27 0.023 246.3)", "oklch(0.39 0.023 246.3)", "oklch(0.51 0.023 246.3)", "oklch(0.63 0.023 246.3)", "oklch(0.75 0.023 246.3)", "oklch(0.87 0.023 246.3)", "oklch(0.95 0.023 246.3)"]
+      },
+      "steel": {
+        "role": "neutral",
+        "displayName": "Instrument Steel",
+        "tonalRamp": ["oklch(0.15 0.036 242.7)", "oklch(0.27 0.036 242.7)", "oklch(0.39 0.036 242.7)", "oklch(0.51 0.036 242.7)", "oklch(0.63 0.036 242.7)", "oklch(0.75 0.036 242.7)", "oklch(0.87 0.036 242.7)", "oklch(0.95 0.036 242.7)"]
+      },
+      "steel-light": {
+        "role": "neutral",
+        "displayName": "Light Instrument Steel",
+        "tonalRamp": ["oklch(0.15 0.028 241.3)", "oklch(0.27 0.028 241.3)", "oklch(0.39 0.028 241.3)", "oklch(0.51 0.028 241.3)", "oklch(0.63 0.028 241.3)", "oklch(0.75 0.028 241.3)", "oklch(0.87 0.028 241.3)", "oklch(0.95 0.028 241.3)"]
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Steel Rule",
+        "tonalRamp": ["oklch(0.15 0.029 242.8)", "oklch(0.27 0.029 242.8)", "oklch(0.39 0.029 242.8)", "oklch(0.51 0.029 242.8)", "oklch(0.63 0.029 242.8)", "oklch(0.75 0.029 242.8)", "oklch(0.87 0.029 242.8)", "oklch(0.95 0.029 242.8)"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Ledger Paper",
+        "tonalRamp": ["oklch(0.15 0.013 86.8)", "oklch(0.27 0.013 86.8)", "oklch(0.39 0.013 86.8)", "oklch(0.51 0.013 86.8)", "oklch(0.63 0.013 86.8)", "oklch(0.75 0.013 86.8)", "oklch(0.87 0.013 86.8)", "oklch(0.95 0.013 86.8)"]
+      },
+      "paper-bright": {
+        "role": "neutral",
+        "displayName": "Bright Ledger Paper",
+        "tonalRamp": ["oklch(0.15 0.010 87.5)", "oklch(0.27 0.010 87.5)", "oklch(0.39 0.010 87.5)", "oklch(0.51 0.010 87.5)", "oklch(0.63 0.010 87.5)", "oklch(0.75 0.010 87.5)", "oklch(0.87 0.010 87.5)", "oklch(0.95 0.010 87.5)"]
+      },
+      "paper-deep": {
+        "role": "neutral",
+        "displayName": "Deep Ledger Paper",
+        "tonalRamp": ["oklch(0.15 0.022 85.9)", "oklch(0.27 0.022 85.9)", "oklch(0.39 0.022 85.9)", "oklch(0.51 0.022 85.9)", "oklch(0.63 0.022 85.9)", "oklch(0.75 0.022 85.9)", "oklch(0.87 0.022 85.9)", "oklch(0.95 0.022 85.9)"]
+      },
+      "paper-line": {
+        "role": "neutral",
+        "displayName": "Ledger Rule",
+        "tonalRamp": ["oklch(0.15 0.021 81.8)", "oklch(0.27 0.021 81.8)", "oklch(0.39 0.021 81.8)", "oklch(0.51 0.021 81.8)", "oklch(0.63 0.021 81.8)", "oklch(0.75 0.021 81.8)", "oklch(0.87 0.021 81.8)", "oklch(0.95 0.021 81.8)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ledger Ink",
+        "tonalRamp": ["oklch(0.15 0.011 242.2)", "oklch(0.27 0.011 242.2)", "oklch(0.39 0.011 242.2)", "oklch(0.51 0.011 242.2)", "oklch(0.63 0.011 242.2)", "oklch(0.75 0.011 242.2)", "oklch(0.87 0.011 242.2)", "oklch(0.95 0.011 242.2)"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ledger Ink",
+        "tonalRamp": ["oklch(0.15 0.018 242.1)", "oklch(0.27 0.018 242.1)", "oklch(0.39 0.018 242.1)", "oklch(0.51 0.018 242.1)", "oklch(0.63 0.018 242.1)", "oklch(0.75 0.018 242.1)", "oklch(0.87 0.018 242.1)", "oklch(0.95 0.018 242.1)"]
+      },
+      "signal": {
+        "role": "primary",
+        "displayName": "Acid Signal Lime",
+        "tonalRamp": ["oklch(0.15 0.206 121.2)", "oklch(0.27 0.206 121.2)", "oklch(0.39 0.206 121.2)", "oklch(0.51 0.206 121.2)", "oklch(0.63 0.206 121.2)", "oklch(0.75 0.206 121.2)", "oklch(0.87 0.206 121.2)", "oklch(0.95 0.206 121.2)"]
+      },
+      "signal-dark": {
+        "role": "primary",
+        "displayName": "Deep Signal Green",
+        "tonalRamp": ["oklch(0.15 0.072 126.9)", "oklch(0.27 0.072 126.9)", "oklch(0.39 0.072 126.9)", "oklch(0.51 0.072 126.9)", "oklch(0.63 0.072 126.9)", "oklch(0.75 0.072 126.9)", "oklch(0.87 0.072 126.9)", "oklch(0.95 0.072 126.9)"]
+      },
+      "alert": {
+        "role": "secondary",
+        "displayName": "Urgency Coral",
+        "tonalRamp": ["oklch(0.15 0.189 33.4)", "oklch(0.27 0.189 33.4)", "oklch(0.39 0.189 33.4)", "oklch(0.51 0.189 33.4)", "oklch(0.63 0.189 33.4)", "oklch(0.75 0.189 33.4)", "oklch(0.87 0.189 33.4)", "oklch(0.95 0.189 33.4)"]
+      },
+      "focus": {
+        "role": "tertiary",
+        "displayName": "Focus Blue",
+        "tonalRamp": ["oklch(0.15 0.122 234.1)", "oklch(0.27 0.122 234.1)", "oklch(0.39 0.122 234.1)", "oklch(0.51 0.122 234.1)", "oklch(0.63 0.122 234.1)", "oklch(0.75 0.122 234.1)", "oklch(0.87 0.122 234.1)", "oklch(0.95 0.122 234.1)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Detector Display",
+        "purpose": "Hero-only condensed statements with editorial urgency."
+      },
+      "headline": {
+        "displayName": "Station Headline",
+        "purpose": "Major workflow and section transitions."
+      },
+      "title": {
+        "displayName": "Operational Title",
+        "purpose": "Queue, timetable, receipt, and evidence-group titles."
+      },
+      "body": {
+        "displayName": "System Body",
+        "purpose": "Readable explanations, method copy, and form guidance."
+      },
+      "control": {
+        "displayName": "Control Label",
+        "purpose": "Compact, decisive button and interactive labels."
+      },
+      "data": {
+        "displayName": "Instrument Data",
+        "purpose": "Amounts, ranks, timings, station labels, and statuses."
+      }
+    },
+    "shadows": [
+      {
+        "name": "detector-popover",
+        "value": "0 18px 44px rgba(0, 0, 0, 0.28)",
+        "purpose": "Separates the open local-mode explanation from the sticky masthead."
+      },
+      {
+        "name": "ledger-receipt-offset",
+        "value": "5px 7px 0 #cec4b2",
+        "purpose": "Makes the privacy receipt read as a physical proof slip."
+      },
+      {
+        "name": "signal-glow",
+        "value": "drop-shadow(0 3px 7px rgba(215, 255, 67, 0.38))",
+        "purpose": "Raises live lime points from the detector grid."
+      },
+      {
+        "name": "urgency-glow",
+        "value": "drop-shadow(0 3px 7px rgba(255, 105, 74, 0.32))",
+        "purpose": "Raises costly or time-sensitive coral points from the detector grid."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-response",
+        "value": "160ms ease-out",
+        "purpose": "Hover lift and color response for buttons and the drop zone."
+      },
+      {
+        "name": "detector-scan",
+        "value": "520ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "One-shot radar and statement scan after an explicit action."
+      },
+      {
+        "name": "signal-arrival",
+        "value": "420ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "One-shot scale and opacity arrival for plotted detector signals."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-collapse",
+        "value": "1180px"
+      },
+      {
+        "name": "single-column",
+        "value": "920px"
+      },
+      {
+        "name": "phone",
+        "value": "660px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Signal Button",
+      "kind": "button",
+      "refersTo": "button-signal",
+      "description": "Primary import and scan action, using scarce lime to mark a consequential next step.",
+      "html": "<button class=\"ds-btn-signal\" type=\"button\">Scan statement <span aria-hidden=\"true\">&rarr;</span></button>",
+      "css": ".ds-btn-signal { display:inline-flex; align-items:center; justify-content:center; gap:.8rem; min-height:46px; padding:.7rem 1rem; border:1px solid transparent; border-radius:8px; background:var(--signal); color:var(--ink); cursor:pointer; font-family:var(--body); font-size:.9rem; font-weight:750; transition:translate 160ms ease-out, background-color 160ms ease-out; } .ds-btn-signal:hover { translate:0 -2px; background:#e3ff7a; } .ds-btn-signal:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action on the dark detector field.",
+      "html": "<button class=\"ds-btn-ghost\" type=\"button\">Run the private demo</button>",
+      "css": ".ds-btn-ghost { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:.7rem 1rem; border:1px solid var(--steel); border-radius:8px; background:transparent; color:var(--paper-bright); cursor:pointer; font-family:var(--body); font-size:.9rem; font-weight:750; transition:translate 160ms ease-out, border-color 160ms ease-out; } .ds-btn-ghost:hover { translate:0 -2px; border-color:var(--paper); } .ds-btn-ghost:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Low-emphasis ledger action such as clearing or restoring local state.",
+      "html": "<button class=\"ds-btn-quiet\" type=\"button\">Clear this tab</button>",
+      "css": ".ds-btn-quiet { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:.7rem 1rem; border:1px solid var(--paper-line); border-radius:8px; background:transparent; color:var(--ink-soft); cursor:pointer; font-family:var(--body); font-size:.9rem; font-weight:750; transition:translate 160ms ease-out; } .ds-btn-quiet:hover { translate:0 -2px; } .ds-btn-quiet:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Ledger Select Field",
+      "kind": "input",
+      "refersTo": "field-ledger",
+      "description": "Native form control on bright paper with explicit supporting context.",
+      "html": "<label class=\"ds-field\"><span>Statement currency</span><select><option>USD · US dollar</option><option>SGD · Singapore dollar</option></select><small>Labels original amounts; no exchange-rate conversion.</small></label>",
+      "css": ".ds-field { display:grid; gap:.35rem; min-width:220px; color:var(--ink-soft); font-family:var(--body); font-size:.72rem; font-weight:700; } .ds-field select { width:100%; min-height:42px; padding:.55rem .65rem; border:1px solid var(--paper-line); border-radius:7px; background:var(--paper-bright); color:var(--ink); font:inherit; font-size:1rem; font-weight:400; } .ds-field small { font-weight:500; line-height:1.4; } .ds-field select:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Desk Shortcut Navigation",
+      "kind": "nav",
+      "refersTo": "desk-navigation",
+      "description": "Compact ruled shortcuts used inside the dark results desk.",
+      "html": "<nav class=\"ds-desk-nav\" aria-label=\"Signal desk shortcuts\"><a href=\"#\">Import</a><a href=\"#\">Decisions</a><a href=\"#\">Renewals</a><a href=\"#\">Method</a></nav>",
+      "css": ".ds-desk-nav { display:flex; gap:.5rem; padding:.75rem 0; background:var(--void); font-family:var(--body); } .ds-desk-nav a { min-height:36px; padding:.55rem .75rem; border:1px solid var(--dark-line); color:var(--steel-light); font-size:.7rem; text-decoration:none; } .ds-desk-nav a:hover, .ds-desk-nav a:focus-visible { border-color:var(--signal); color:var(--signal); } .ds-desk-nav a:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Source Badge",
+      "kind": "chip",
+      "refersTo": "source-badge",
+      "description": "Monospace pill identifying whether the detector is showing illustrative or imported data.",
+      "html": "<span class=\"ds-source-badge\">Illustrative demo</span>",
+      "css": ".ds-source-badge { display:inline-block; max-width:180px; overflow:hidden; padding:.45rem .6rem; border:1px solid var(--dark-line); border-radius:999px; color:var(--signal); font-family:var(--data); font-size:.68rem; text-overflow:ellipsis; white-space:nowrap; }"
+    },
+    {
+      "name": "CSV Drop Zone",
+      "kind": "custom",
+      "refersTo": "drop-zone",
+      "description": "Paper-side transaction intake with a file glyph and hover, drag, and focus affordances.",
+      "html": "<label class=\"ds-drop-zone\"><span class=\"ds-file-glyph\" aria-hidden=\"true\">CSV</span><span><strong>Drop a bank CSV here</strong><small>or choose a file from this device</small></span><input type=\"file\" accept=\".csv,text/csv\"></label>",
+      "css": ".ds-drop-zone { display:grid; grid-template-columns:60px minmax(0,1fr); align-items:center; gap:1rem; min-height:112px; padding:1.25rem; border:1px dashed #6c757b; border-radius:10px; background:var(--paper); color:var(--ink); cursor:pointer; font-family:var(--body); transition:background-color 160ms ease-out, border-color 160ms ease-out; } .ds-drop-zone input { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); } .ds-drop-zone strong, .ds-drop-zone small { display:block; } .ds-drop-zone strong { font-family:var(--display); font-size:1.2rem; } .ds-drop-zone small { margin-top:.35rem; color:var(--ink-soft); } .ds-file-glyph { display:grid; place-items:center; width:58px; height:70px; border:1px solid var(--ink); border-radius:4px 11px 4px 4px; font-family:var(--data); font-size:.75rem; font-weight:800; } .ds-drop-zone:hover, .ds-drop-zone:focus-within { border-color:var(--ink); background:var(--paper-bright); } .ds-drop-zone:focus-within { outline:3px solid var(--focus); outline-offset:3px; }"
+    },
+    {
+      "name": "Privacy Receipt",
+      "kind": "card",
+      "refersTo": "privacy-receipt",
+      "description": "Physical proof-slip treatment for local-only architecture assurances.",
+      "html": "<aside class=\"ds-privacy-receipt\"><p>Privacy receipt</p><h3>Local-only, by architecture.</h3><ul><li><span aria-hidden=\"true\">✓</span> Parsed in your browser</li><li><span aria-hidden=\"true\">✓</span> Not stored on a server</li><li><span aria-hidden=\"true\">✓</span> No third-party scripts</li></ul><small>Closing this tab clears the current session.</small></aside>",
+      "css": ".ds-privacy-receipt { width:270px; padding:2rem; border:1px solid #9e9586; border-radius:4px; background:var(--paper-deep); color:var(--ink); box-shadow:5px 7px 0 #cec4b2; font-family:var(--body); } .ds-privacy-receipt > p { color:#5a5247; font-family:var(--data); font-size:.68rem; text-transform:uppercase; } .ds-privacy-receipt h3 { max-width:13ch; margin:.45rem 0 0; font-family:var(--display); font-size:1.55rem; line-height:1; } .ds-privacy-receipt ul { display:grid; gap:.6rem; margin:1.25rem 0 0; padding:0; list-style:none; font-size:.78rem; } .ds-privacy-receipt li { padding-bottom:.55rem; border-bottom:1px solid #c9beaa; } .ds-privacy-receipt li span { margin-right:.45rem; color:#3e6b21; font-weight:900; } .ds-privacy-receipt > small { display:block; margin-top:1rem; color:#5a5247; line-height:1.45; }"
+    },
+    {
+      "name": "Recurring Finding Row",
+      "kind": "custom",
+      "refersTo": "finding-row",
+      "description": "Native disclosure row that keeps rank, merchant, cost, and review state visible before evidence opens.",
+      "html": "<details class=\"ds-finding\" open><summary><span class=\"ds-finding-rank\">01</span><span class=\"ds-finding-name\"><strong>Sample Streaming</strong><small>Monthly · 4 charges · renews 12 Aug</small></span><span class=\"ds-finding-cost\"><strong>$155.88</strong><small>estimated yearly</small></span><span class=\"ds-review-state\">Needs review</span></summary><div class=\"ds-finding-body\">Heuristic pattern score 91/99 · next renewal is estimated from imported history.</div></details>",
+      "css": ".ds-finding { border-bottom:1px solid var(--paper-line); background:var(--paper); color:var(--ink); font-family:var(--body); } .ds-finding summary { display:grid; grid-template-columns:44px minmax(0,1fr) auto auto; align-items:center; gap:1rem; min-height:86px; padding:1rem 0; cursor:pointer; list-style:none; } .ds-finding summary::-webkit-details-marker { display:none; } .ds-finding summary:focus-visible { outline:3px solid var(--focus); outline-offset:4px; } .ds-finding-rank { display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--ink); border-radius:50%; font-family:var(--data); font-size:.72rem; font-weight:800; } .ds-finding-name strong { display:block; font-family:var(--display); font-size:1.3rem; } .ds-finding-name small, .ds-finding-cost small { display:block; margin-top:.3rem; color:var(--ink-soft); font-size:.72rem; } .ds-finding-cost { text-align:right; } .ds-finding-cost strong { font-family:var(--data); font-size:1.05rem; } .ds-review-state { min-width:88px; padding:.4rem .55rem; border:1px solid #8b3c2d; border-radius:999px; background:#fff1ed; color:#8b3c2d; font-family:var(--data); font-size:.64rem; font-weight:800; text-align:center; } .ds-finding-body { margin-left:60px; padding:0 0 1.4rem; color:var(--ink-soft); font-size:.75rem; line-height:1.5; }"
+    },
+    {
+      "name": "Renewal Timetable Row",
+      "kind": "custom",
+      "refersTo": "renewal-row",
+      "description": "Compact dark timetable row with timing, merchant context, action, and amount.",
+      "html": "<article class=\"ds-renewal\"><div class=\"ds-renewal-time\"><strong>in 8 days</strong><span>12 Aug</span></div><div class=\"ds-renewal-detail\"><strong>Sample Streaming</strong><span>Investigate · Monthly</span></div><strong class=\"ds-renewal-amount\">$12.99</strong></article>",
+      "css": ".ds-renewal { display:grid; grid-template-columns:76px minmax(0,1fr) auto; align-items:center; gap:.75rem; min-width:0; padding:.9rem 0; border-bottom:1px solid var(--dark-line); background:var(--void-raised); font-family:var(--body); } .ds-renewal-time strong, .ds-renewal-time span, .ds-renewal-detail strong, .ds-renewal-detail span { display:block; } .ds-renewal-time strong { color:var(--signal); font-family:var(--data); font-size:.82rem; } .ds-renewal-time span, .ds-renewal-detail span { margin-top:.2rem; color:var(--steel); font-size:.65rem; } .ds-renewal-detail { min-width:0; } .ds-renewal-detail strong { overflow:hidden; color:var(--paper); font-size:.78rem; text-overflow:ellipsis; white-space:nowrap; } .ds-renewal-amount { color:var(--paper); font-family:var(--data); font-size:.72rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Signal Desk",
+    "overview": "The Signal Desk treats a bank statement as an instrument reading before it becomes a plan. Discovery happens in a near-black detector room of steel rules, sparse luminous signals, and precise readouts; review happens on warm paper where every estimate is attached to evidence and a human decision.\n\nThe system is serious without becoming sterile. Condensed headlines provide editorial urgency, monospace labels make evidence feel measured, and native controls keep the workflow trustworthy. Expression comes from the transition between detector and ledger, not from decoration or a generic finance-dashboard grid.",
+    "keyCharacteristics": [
+      "Dark detector field paired with warm paper work surfaces",
+      "Sharp instrument geometry with selective soft control corners",
+      "Sparse acid-lime signals and coral urgency marks",
+      "Condensed display type, system body text, and monospace evidence",
+      "Dense operational information with progressive disclosure",
+      "Native, accessible controls with explicit focus and reduced-motion behavior"
+    ],
+    "rules": [
+      {
+        "name": "The Rare Signal Rule",
+        "body": "Lime identifies a detected signal or a consequential action; its scarcity is what makes the detector legible.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Material Rule",
+        "body": "Detector neutrals never masquerade as paper, and paper neutrals never become a dark glass panel; the transition communicates the move from discovery to consent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Instrument Hierarchy Rule",
+        "body": "Display type states the question, body type explains it, and monospace type records the evidence; do not swap those jobs for visual variety.",
+        "section": "typography"
+      },
+      {
+        "name": "The Structural Depth Rule",
+        "body": "Use borders and material changes first; reserve shadows for an open overlay, a physical receipt, or an active signal.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the detector-to-ledger transition when adding analysis and review surfaces.",
+      "Do keep lime for detected signals and consequential actions, and coral for genuine urgency.",
+      "Do use one-pixel rules, tabular alignment, and progressive disclosure to organize dense evidence.",
+      "Do use native semantic controls, visible focus, text alternatives, and the shipped reduced-motion fallback.",
+      "Do label estimates and illustrative data in the same visual hierarchy as the values they qualify."
+    ],
+    "donts": [
+      "Don't add external fonts, icon fonts, third-party scripts, raster decoration, or runtime visual assets.",
+      "Don't turn the workflow into a generic grid of detached metric cards.",
+      "Don't introduce decorative glass, gradient text, atmospheric gradients, or ambient looping animation.",
+      "Don't flood a surface with lime or coral; both colors lose meaning when they become background decoration.",
+      "Don't round every region into a soft card or remove the ruled ledger and instrument geometry."
+    ]
+  }
+}

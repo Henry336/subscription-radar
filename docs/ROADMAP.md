@@ -9,8 +9,10 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 - Improve merchant normalization with user-approved aliases.
 - Detect trial-to-paid transitions more explicitly.
 - Add messy CSV examples for banks that split debit and credit columns.
-- Persist cleanup decisions locally with clear browser-storage privacy copy.
+- Offer opt-in local persistence for approved merchant aliases and cleanup decisions, with explicit browser-storage privacy copy and a one-click erase path.
 - Add merge controls for duplicate or alias-related candidates.
+- Publish bank-specific CSV export guides, beginning with common Singapore, US, UK, and Australian formats.
+- Validate whether users complete a real cleanup action and recover more value than the proposed Pro price.
 
 ## Deferred ideas
 
@@ -27,6 +29,9 @@ Build a local-first 5-minute demo for subscription cleanup from pasted transacti
 
 ## Completed
 
+- The Signal Desk interface with an interactive annual-leak radar, action queue, privacy receipt, renewal timetable, and duplicate-risk review.
+- Explicit date-format rescue, display-currency selection, and safe input-size limits.
+- Production-ready static hosting policy with restrictive browser security headers.
 - Renewal timeline sorted by estimated next charge date and annualized cost, with overdue and next 7/30/90 day urgency labels.
 - Separate detector suggestions from user-selected cleanup actions in the UI and exported cleanup plan.
 - Manual column mapping rescue for messy CSVs with nonstandard headers, swapped columns, or split debit/credit columns.

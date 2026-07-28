@@ -3,59 +3,285 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Subscription Leak Radar</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests"
+    >
+    <meta name="theme-color" content="#091016">
+    <meta
+      name="description"
+      content="Find recurring charges and plan what to cancel from a bank CSV. Your transaction data stays in this browser tab."
+    >
+    <title>Subscription Radar — Find recurring charges privately</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./src/styles.css">
   </head>
   <body>
-    <header class="topbar">
-      <div>
-        <h1>Subscription Leak Radar</h1>
-        <p>Local-first recurring charge review from pasted transactions or CSV files.</p>
-      </div>
-      <div class="privacy">No bank login &middot; no upload &middot; browser only</div>
-    </header>
+    <a class="skip-link" href="#scan-station">Skip to the scanner</a>
 
-    <main>
-      <section class="panel input-panel" aria-labelledby="input-title">
-        <div class="section-title">
-          <h2 id="input-title">Transactions</h2>
-          <div class="actions">
-            <label class="file-button">
-              Import CSV
-              <input id="csv-file" type="file" accept=".csv,text/csv">
-            </label>
-            <button id="load-sample" type="button">Load sample</button>
-            <button id="analyze" class="primary" type="button">Analyze</button>
+    <!--
+      THESIS: A bank statement becomes a visible signal map and decision queue; this refuses the generic finance-dashboard grid.
+      OWN-WORLD: Midnight detector field, warm ledger paper, steel rules, acid-lime signals, and coral urgency marks.
+      STORY: See the local-only mechanism, scan a statement, inspect evidence, choose actions, and export a cleanup plan.
+      FIRST VIEWPORT: Promise and import actions at left; a ready concentric detector that resolves only after an explicit scan at right.
+      FORM: The Signal Desk, a ranked transit-signal stack staged as a detector event display; seed 7ec401f6.
+    -->
+    <div class="site-shell">
+      <header class="masthead">
+        <a class="brand" href="#top" aria-label="Subscription Radar home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>Subscription Radar</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="#scan-station">Scanner</a>
+          <a href="#signal-desk">Signal desk</a>
+          <a href="#method">How it works</a>
+        </nav>
+        <details class="local-mode">
+          <summary><span aria-hidden="true"></span> Local mode</summary>
+          <div>
+            <strong>Nothing leaves this tab.</strong>
+            <p>No account, bank login, analytics, cloud storage, or transaction upload.</p>
           </div>
-        </div>
-        <textarea id="transaction-input" spellcheck="false" placeholder="Paste CSV rows with Date, Description, Amount columns. Negative amounts are treated as spending; refunds and credits are ignored."></textarea>
-        <p id="parse-status" class="status">0 transactions parsed.</p>
-        <div id="import-review" class="import-review" aria-live="polite"></div>
-      </section>
+        </details>
+      </header>
 
-      <section id="summary" class="summary" aria-label="Analysis summary"></section>
-
-      <section class="grid">
-        <div class="panel">
-          <div class="section-title">
-            <h2>Recurring candidates</h2>
-            <button id="export-plan" class="primary" type="button" disabled>Export plan</button>
+      <main id="main-content">
+        <section id="top" class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="signal-label"><span></span> Private recurring-charge detector</p>
+            <h1 id="hero-title">Find the charges that learned to hide.</h1>
+            <p class="hero-intro">
+              Drop in a bank statement. Subscription Radar finds recurring patterns,
+              shows its evidence, and turns them into decisions—without asking for
+              your bank login or sending a single row away.
+            </p>
+            <div class="hero-actions">
+              <button id="open-file" class="button button-signal" type="button">
+                Use my CSV
+                <span aria-hidden="true">↗</span>
+              </button>
+              <button id="load-sample" class="button button-ghost" type="button">
+                Run the private demo
+              </button>
+            </div>
+            <p class="support-note">CSV only · 2 MB safety limit · processing stays on this device</p>
+            <dl class="privacy-proof" aria-label="Privacy proof">
+              <div><dt>Account</dt><dd>Not needed</dd></div>
+              <div><dt>Upload</dt><dd>Never</dd></div>
+              <div><dt>Retention</dt><dd>This tab only</dd></div>
+            </dl>
           </div>
-          <div id="findings" class="stack"></div>
-          <div id="suppressed" class="stack"></div>
-        </div>
-        <aside class="side-rail">
-          <section class="panel">
-            <h2>Renewal timeline</h2>
-            <div id="renewals" class="stack compact"></div>
-          </section>
-          <section class="panel">
-            <h2>Duplicate risks</h2>
-            <div id="duplicates" class="stack compact"></div>
-          </section>
-        </aside>
-      </section>
-    </main>
+
+          <div class="detector-stage" aria-labelledby="detector-title">
+            <div class="detector-head">
+              <div>
+                <p>Live detector</p>
+                <h2 id="detector-title">Recurring signal field</h2>
+              </div>
+              <span id="source-badge" class="source-badge">Illustrative demo</span>
+            </div>
+            <div id="radar" class="radar" aria-live="polite"></div>
+            <div class="detector-readout">
+              <div>
+                <span>Estimated recurring spend</span>
+                <strong id="radar-total">$0.00</strong>
+                <small>annualized from detected patterns</small>
+              </div>
+              <div>
+                <span>Signals found</span>
+                <strong id="radar-count">0</strong>
+                <small>review before acting</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="scan-station" class="scan-station" aria-labelledby="scan-title">
+          <header class="station-head">
+            <div>
+              <p class="station-index">Scanner / local process</p>
+              <h2 id="scan-title">Statement in. Decisions out.</h2>
+            </div>
+            <p id="scan-mode">Illustrative demo data is loaded.</p>
+          </header>
+
+          <div class="scan-grid">
+            <div class="intake">
+              <label class="drop-zone" for="csv-file">
+                <span class="file-glyph" aria-hidden="true">CSV</span>
+                <span>
+                  <strong>Drop a bank CSV here</strong>
+                  <small>or choose a file from this device</small>
+                </span>
+                <input id="csv-file" class="visually-hidden" type="file" accept=".csv,text/csv">
+              </label>
+
+              <details class="paste-drawer">
+                <summary>Paste transaction rows instead</summary>
+                <textarea
+                  id="transaction-input"
+                  spellcheck="false"
+                  aria-describedby="input-help parse-status"
+                  placeholder="Date, Description, Amount"
+                ></textarea>
+                <p id="input-help">
+                  Include date, merchant or description, and amount. Negative amounts
+                  are treated as spending; credits and refunds are ignored.
+                </p>
+              </details>
+
+              <div class="scan-controls-row">
+                <label class="currency-control">
+                  <span>Statement currency</span>
+                  <select id="currency-select" aria-describedby="currency-note">
+                    <option value="USD">USD · US dollar</option>
+                    <option value="SGD">SGD · Singapore dollar</option>
+                    <option value="EUR">EUR · Euro</option>
+                    <option value="GBP">GBP · Pound sterling</option>
+                    <option value="AUD">AUD · Australian dollar</option>
+                    <option value="CAD">CAD · Canadian dollar</option>
+                    <option value="JPY">JPY · Japanese yen</option>
+                    <option value="INR">INR · Indian rupee</option>
+                  </select>
+                  <small id="currency-note">Labels the original amounts; no exchange-rate conversion.</small>
+                </label>
+                <div class="scanner-actions">
+                  <button id="analyze" class="button button-signal" type="button">Scan statement</button>
+                  <button id="clear-data" class="button button-quiet" type="button">Clear this tab</button>
+                </div>
+              </div>
+              <p id="parse-status" class="parse-status" role="status" aria-live="polite">Waiting for transactions.</p>
+              <p id="input-error" class="input-error" role="alert" tabindex="-1" hidden></p>
+            </div>
+
+            <div class="scan-process" aria-label="Local scan stages">
+              <div class="scan-line" aria-hidden="true"><span></span></div>
+              <ol>
+                <li>
+                  <span>1</span>
+                  <div><strong>Read rows</strong><small>Inside this tab</small></div>
+                </li>
+                <li>
+                  <span>2</span>
+                  <div><strong>Group patterns</strong><small>Amounts + timing</small></div>
+                </li>
+                <li>
+                  <span>3</span>
+                  <div><strong>Show evidence</strong><small>You make the call</small></div>
+                </li>
+              </ol>
+            </div>
+
+            <aside class="privacy-receipt" aria-labelledby="privacy-receipt-title">
+              <p>Privacy receipt</p>
+              <h3 id="privacy-receipt-title">Local-only, by architecture.</h3>
+              <ul>
+                <li><span>✓</span> Parsed in your browser</li>
+                <li><span>✓</span> Not stored on a server</li>
+                <li><span>✓</span> No third-party scripts</li>
+                <li><span>✓</span> Clearable at any time</li>
+              </ul>
+              <small>Closing this tab also clears the current session.</small>
+            </aside>
+          </div>
+
+          <div id="import-review" class="import-review" aria-live="polite"></div>
+        </section>
+
+        <section id="signal-desk" class="signal-desk" aria-labelledby="results-title" hidden>
+          <header class="results-head">
+            <div>
+              <p class="station-index">Signal desk / review before action</p>
+              <h2 id="results-title">What deserves a decision?</h2>
+              <p>Detector suggestions are clues. Nothing enters the plan until you review it.</p>
+            </div>
+            <div class="export-control">
+            <button id="export-plan" class="button button-export" type="button" disabled>
+              Export cleanup plan
+              <span aria-hidden="true">↓</span>
+            </button>
+              <p id="action-status" role="status" aria-live="polite">Review every active signal to unlock export.</p>
+            </div>
+          </header>
+
+          <nav class="desk-jumps" aria-label="Signal desk shortcuts">
+            <a href="#scan-station">Import</a>
+            <a href="#findings">Decisions</a>
+            <a href="#renewal-title">Renewals</a>
+            <a href="#method">Method</a>
+          </nav>
+
+          <section id="summary" class="summary-strip" aria-label="Analysis summary"></section>
+
+          <div class="desk-grid">
+            <section class="decision-queue" aria-labelledby="queue-title">
+              <header>
+                <div>
+                  <p>Ranked by heuristic pattern score, then annual cost</p>
+                  <h3 id="queue-title">Recurring signals</h3>
+                </div>
+                <div class="queue-meta">
+                  <span id="queue-count" tabindex="-1">0 awaiting review</span>
+                  <button id="accept-suggestions" class="text-action" type="button" hidden>
+                    Use all detector suggestions
+                  </button>
+                </div>
+              </header>
+              <div id="findings" class="findings"></div>
+              <div id="suppressed" class="suppressed"></div>
+            </section>
+
+            <aside class="desk-rail">
+              <section class="renewal-board" aria-labelledby="renewal-title">
+                <header>
+                  <p>Next on the line</p>
+                  <h3 id="renewal-title">Renewal timetable</h3>
+                </header>
+                <div id="renewals" class="renewals"></div>
+              </section>
+
+              <section class="duplicate-board" aria-labelledby="duplicate-title">
+                <header>
+                  <p>Same merchant, multiple patterns</p>
+                  <h3 id="duplicate-title">Possible overlaps</h3>
+                </header>
+                <div id="duplicates" class="duplicates"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section id="method" class="method" aria-labelledby="method-title">
+          <div>
+            <p class="station-index">Why this is different</p>
+            <h2 id="method-title">Automatic discovery. Manual consent.</h2>
+          </div>
+          <div class="method-flow">
+            <article>
+              <span>01</span>
+              <h3>Bring a copy, not credentials</h3>
+              <p>A one-time CSV gives the detector enough history without an ongoing bank connection.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>See the evidence</h3>
+              <p>Cadence, amount spread, observed gaps, and a labelled heuristic score stay attached to every finding.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Keep the final say</h3>
+              <p>Rename, dismiss, restore, or choose an action before anything enters the exported plan.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p><strong>Subscription Radar</strong> is an experimental local-first detector, not financial advice.</p>
+        <p>No account · no analytics · no transaction upload</p>
+      </footer>
+    </div>
 
     <script type="module" src="./src/app.js"></script>
   </body>

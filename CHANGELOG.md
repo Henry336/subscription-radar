@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.0 - 2026-07-29
+
+### Added
+
+- The Signal Desk interface: an interactive signal radar, evidence-led cleanup ledger, renewal timetable, duplicate-risk review, and session privacy receipt.
+- Explicit date-format controls for ambiguous bank exports and clear warnings when slash-formatted dates need confirmation.
+- Statement-currency labelling for estimates and exported cleanup plans, with an explicit no-conversion warning.
+- Input limits for CSV size, row count, and column count.
+- Production hosting policy with a restrictive content security policy and browser security headers.
+
+### Changed
+
+- The demo dataset now stays relevant to the current date so renewal urgency and duplicate-pattern examples remain useful.
+- Results prioritize explainable cancellation, downgrade, review, and keep decisions instead of dashboard decoration.
+- Merchant and transaction content is rendered with safe DOM text APIs.
+
+### Security
+
+- The static app uses no analytics, bank connection, remote API, browser storage, or third-party runtime assets.
+- Imported financial data stays in ephemeral page memory and can be removed with **Clear this tab**.
+- Export now requires explicit review of every active signal; detector suggestions never silently become user decisions.
+
 ## 0.1.5 - 2026-07-08
 
 ### Added

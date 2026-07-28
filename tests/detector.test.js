@@ -1,6 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { analyzeSubscriptions, normalizeMerchant, parseTransactionInput, parseTransactions, sampleCsv } from "../src/detector.js";
+import {
+  INPUT_LIMITS,
+  analyzeSubscriptions,
+  createSampleCsv,
+  normalizeMerchant,
+  parseTransactionInput,
+  parseTransactions,
+  sampleCsv
+} from "../src/detector.js";
 
 test("parses CSV with quoted merchants and parenthesized charges", () => {
   const rows = parseTransactions(`Date,Description,Amount
@@ -78,6 +86,25 @@ Acme Refund,12.99,,2026-01-02`, {
   assert.equal(result.diagnostics.columns.credit, "Deposit (column 2)");
 });
 
+test("supports explicit day-first dates and warns on ambiguous auto dates", () => {
+  const ambiguous = parseTransactionInput(`Date,Description,Amount
+01/02/2026,Acme Streaming,-12.99`);
+  const dayFirst = parseTransactionInput(`Date,Description,Amount
+01/02/2026,Acme Streaming,-12.99`, { dateOrder: "dmy" });
+
+  assert.equal(ambiguous.transactions[0].date, "2026-01-02");
+  assert.equal(ambiguous.diagnostics.warnings.length, 1);
+  assert.equal(dayFirst.transactions[0].date, "2026-02-01");
+  assert.equal(dayFirst.diagnostics.warnings.length, 0);
+});
+
+test("rejects inputs that exceed the local safety limit", () => {
+  const result = parseTransactionInput("A".repeat(INPUT_LIMITS.maxCharacters + 1));
+
+  assert.equal(result.transactions.length, 0);
+  assert.match(result.diagnostics.error, /too large/i);
+});
+
 test("normalizes noisy merchant descriptors", () => {
   assert.equal(normalizeMerchant("NETFLIX.COM 866-579-7172"), "netflix");
   assert.equal(normalizeMerchant("SPOTIFY *PREMIUM"), "spotify");
@@ -91,6 +118,18 @@ test("detects monthly and annual recurring candidates from sample data", () => {
   assert.ok(merchants.includes("Todoist"));
   assert.ok(analysis.totalAnnualEstimate > 300);
   assert.equal(analysis.ignoredTransactions, 2);
+});
+
+test("keeps sample renewals useful relative to the day the demo runs", () => {
+  const today = new Date("2026-07-29T00:00:00Z");
+  const analysis = analyzeSubscriptions(parseTransactions(createSampleCsv(today)));
+  const nearestRenewal = analysis.subscriptions
+    .filter((item) => item.nextRenewal)
+    .map((item) => item.nextRenewal)
+    .sort()[0];
+
+  assert.ok(nearestRenewal >= "2026-08-08");
+  assert.ok(analysis.duplicateRisks.some((risk) => risk.merchant === "Cloudbox Storage"));
 });
 
 test("does not flag one-off marketplace charges as subscriptions", () => {

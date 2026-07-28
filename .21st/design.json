@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "project": {
+    "name": "subscription-radar",
+    "productType": "local-first personal finance web app",
+    "stack": [
+      "HTML",
+      "CSS",
+      "Vanilla JavaScript"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/styles.css"
+    ],
+    "components": [
+      "index.html",
+      "src/app.js"
+    ],
+    "assets": [
+      "favicon.svg"
+    ],
+    "instructions": [
+      "PRODUCT.md",
+      ".impeccable/surfaces/index-html.md"
+    ]
+  },
+  "design": {
+    "colorMode": "dark detector field with warm light ledger surfaces",
+    "colors": {
+      "void": "#091016",
+      "paper": "#f2eee5",
+      "signal": "#d7ff43",
+      "alert": "#ff694a",
+      "steel": "#6f8495"
+    },
+    "typography": {
+      "display": "condensed system sans",
+      "body": "system UI sans",
+      "data": "system monospace"
+    },
+    "spacing": {
+      "base": "4px",
+      "section": "clamp(3rem, 6vw, 6rem)"
+    },
+    "radius": {
+      "controls": "7-8px",
+      "surfaces": "10-14px",
+      "status": "999px"
+    },
+    "shadows": {
+      "dark": "offset soft depth",
+      "paper": "physical offset only where the privacy receipt metaphor requires it"
+    },
+    "motion": {
+      "signature": "one scan sweep and signal reveal",
+      "reduced": "immediate state change with no spatial motion"
+    },
+    "density": "operational, progressive disclosure for evidence"
+  },
+  "components": {
+    "installed": [],
+    "preferredPrimitives": [
+      "native buttons",
+      "native selects",
+      "details/summary",
+      "semantic tables",
+      "DOM-authored SVG"
+    ],
+    "patterns": [
+      "statement drop zone",
+      "local privacy receipt",
+      "recurring signal field",
+      "evidence-backed decision row",
+      "renewal timetable"
+    ]
+  },
+  "constraints": {
+    "must": [
+      "Keep transaction processing local to the browser",
+      "Preserve keyboard focus, semantics, reduced motion, and mobile layouts",
+      "Label demo values and annualized estimates honestly",
+      "Show detector suggestions separately from user-selected actions"
+    ],
+    "avoid": [
+      "21st component pulls or installs",
+      "third-party scripts, trackers, fonts, or runtime assets",
+      "generic metric-card dashboard structure",
+      "decorative glass, gradient text, and ambient animation"
+    ]
+  },
+  "decisions": [
+    {
+      "name": "The Signal Desk",
+      "summary": "Use a product-specific detector field for discovery and warm ledger surfaces for evidence and decisions.",
+      "references": [
+        "21st file-upload table and drop-zone patterns",
+        "21st semantic data-table patterns",
+        ".impeccable/mocks/signal-room.png",
+        ".impeccable/mocks/leak-ledger.png"
+      ]
+    },
+    {
+      "name": "Inspiration only",
+      "summary": "No component code was pulled or installed from 21st.dev; project-native primitives were implemented in the existing dependency-free stack."
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "product.instructions",
+      "source": "PRODUCT.md"
+    },
+    {
+      "fact": "surface.direction",
+      "source": ".impeccable/surfaces/index-html.md"
+    },
+    {
+      "fact": "visual.tokens",
+      "source": "src/styles.css"
+    }
+  ],
+  "generatedAt": "2026-07-29T03:10:00.000+08:00"
+}
